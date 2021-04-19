@@ -1,0 +1,255 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "Resumation input JSON schema",
+  "type": "object",
+  "properties": {
+    "info": {
+      "description": "Information about yourself",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Your full name",
+          "type": "string"
+        },
+        "email": {
+          "description": "Your email",
+          "type": "string"
+        },
+        "website": {
+          "description": "A link to your http(s):// prefixed website",
+          "type": "string"
+        },
+        "linkedin": {
+          "description": "A link to your http(s):// prefixed LinkedIn page",
+          "type": "string"
+        },
+        "github": {
+          "description": "A link to your http(s):// prefixed GitHub page",
+          "type": "string"
+        },
+        "subtitle": {
+          "description": "A short blurb about yourself to go under your name",
+          "type": "string"
+        },
+        "location": {
+          "description": "Your location",
+          "type": "string"
+        },
+       "pdfFilename": {
+         "description": "Filename of the .PDF that the download button on the generated page will save to",
+         "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "email",
+        "subtitle",
+        "location",
+        "pdfFilename"
+      ]
+    },
+    "education": {
+      "description": "Information about your academic career",
+      "type": "array",
+      "items": [
+        {
+          "description": "A single education entry",
+          "type": "object",
+          "properties": {
+            "institution": {
+              "description": "The name of the academic institution",
+              "type": "string"
+            },
+            "sub": {
+              "description": "A subheading to contextualize this academic experience (i.e., CGPA, majors, etc.)",
+              "type": "string"
+            },
+            "sub_br": {
+              "description": "Only use this if your subheading should have a line break",
+              "type": "array",
+              "items": [
+                {
+                  "description": "An individual line for the subheading",
+                  "type": "string"
+                }
+              ]
+            },
+            "location": {
+              "description": "Location of this academic institution",
+              "type": "string"
+            },
+            "start": {
+              "description": "Start date for this entry",
+              "type": "string"
+            },
+            "end": {
+              "description": "End date/present for this entry",
+              "type": "string"
+            },
+            "details": {
+              "description": "A list of bullet points to expand on this education entry",
+              "type": "array",
+              "items": [
+                {
+                  "description": "A single bullet point",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "required": [
+            "institution",
+            "sub",
+            "location",
+            "start",
+            "end",
+            "details"
+          ]
+        }
+      ]
+    },
+    "work": {
+      "description": "A list of work experience",
+      "type": "array",
+      "items": [
+        {
+          "description": "A given work experience/job",
+          "type": "object",
+          "properties": {
+            "company": {
+              "description": "The company/employer",
+              "type": "string"
+            },
+            "url": {
+              "description": "The http(s):// prefixed link to the employer's website, if any",
+              "type": "string"
+            },
+            "role": {
+              "description": "The role corresponding with this work experience entry",
+              "type": "string"
+            },
+            "location": {
+              "description": "Location of this work experience",
+              "type": "string"
+            },
+            "start": {
+              "description": "Start date of this work experience",
+              "type": "string"
+            },
+            "end": {
+              "description": "End date/present of this work experience",
+              "type": "string"
+            },
+            "details": {
+              "description": "A list of bullet points giving more info regarding this work experience",
+              "type": "array",
+              "items": [
+                {
+                  "description": "A signle bullet point",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "required": [
+            "company",
+            "role",
+            "location",
+            "start",
+            "end",
+            "details"
+          ]
+        }
+      ]
+    },
+    "projects": {
+      "description": "An optional list of personal/non-professional projects",
+      "type": "array",
+      "items": [
+        {
+          "description": "A personal project entry",
+          "type": "object",
+          "properties": {
+            "title": {
+              "description": "The name of this personal project",
+              "type": "string"
+            },
+            "url": {
+              "description": "The http(s):// prefixed link to this project, if any",
+              "type": "string"
+            },
+            "sub": {
+              "description": "A short blurb/subheading relating to this project",
+              "type": "string"
+            },
+            "start": {
+              "description": "Start date of this project",
+              "type": "string"
+            },
+            "end": {
+              "description": "End date/present for this project",
+              "type": "string"
+            },
+            "details": {
+              "description": "A list of bullet points providing more detail for this project",
+              "type": "array",
+              "items": [
+                {
+                  "description": "A single bullet point",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "required": [
+            "title",
+            "sub",
+            "start",
+            "end",
+            "details"
+          ]
+        }
+      ]
+    },
+    "skills": {
+      "description": "A list of relevant professional skills and/or competencies",
+      "type": "array",
+      "items": [
+        {
+          "description": "A single skill/competency",
+          "type": "string"
+        }
+      ]
+    },
+    "metadata": {
+      "description": "Metadata information to embed into the generated webpage",
+      "type": "object",
+      "properties": {
+        "pageTitle": {
+          "description": "HTML page title",
+          "type": "string"
+        },
+        "pageDescription": {
+          "description": "Description for your webpage, usually seen under search engine listings",
+          "type": "string"
+        },
+        "pageKeywords": {
+          "description": "A list of keywords to help search engine indexing",
+          "type": "array",
+          "items": [
+            {
+              "description": "A single keyword",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "required": [
+    "info",
+    "education",
+    "work",
+    "skills",
+  ]
+}
