@@ -1,0 +1,148 @@
+# This section is for general information about yourself
+# A section for general information about yourself
+[info]
+#   Required: name, location, pdfFilename
+name = "Rafi Rahman"
+subtitle = "Software Developer"
+location = "Toronto"
+pdfFilename = "Rafi Rahman - Resume.pdf"
+[info.contact]
+# Entries to place in the optional contact information section
+# Supply a string of the contact info to be shown, or alternatively, a 2-item list in the format of
+# ["contact_info", "fa-icon"], where "fa-icon" is a Font Awesome 5 icon. Please refer to fontawesome.com for icons.
+email = ["hello@rafirahman.com", "fa fa-at"]
+website = "https://rafirahman.com"
+linkedin = ["https://linkedin.com/in/rahmanrafi", "fab fa-linkedin"]
+github = ["https://github.com/rahmanrafi", "fab fa-github"]
+ungabunga = "https://google.com"
+
+
+[metadata]
+pageTitle = "Rafi Rahman - Resume"
+pageDescription = "Rafi Rahman's academic background, work experience, skillset, and more."
+pageKeywords = [
+    "Rafi",
+    "Rahman",
+    "programmer",
+    "coder",
+    "software",
+    "developer",
+    "Toronto",
+    "Ontario",
+    "Canada",
+    "University",
+    "North",
+    "America",
+    "new",
+    "grad",
+    "resume",
+    "academics",
+    "university",
+    "education"
+]
+
+[[education]]
+institution = "University of Toronto, St. George"
+sub = "Honours Bachelor of Science with Distinction | CGPA: 3.4"
+subBr = [
+    "Honours Bachelor of Science with Distinction",
+    "CGPA: 3.4"
+]
+location = "Toronto, Ontario"
+start = "Sept. 2014"
+end = "Sept. 2019"
+details = [
+    "Fields of Study: Computer Science; Physical and Environmental Geography; History and Philosophy of Science and Technology.",
+    "Dean's List, Winter 2016."
+]
+
+[[work]]
+company = "Alphawave"
+url = "https://awaveip.com"
+roles = "DevOps Engineer"
+location = "Toronto, Ontario"
+start = "Aug. 2020"
+end = "Present"
+details = [
+    "Development of executable tools to supplement hardware design workflows.",
+    "Administration of distributed computing network and other server utilities."
+]
+
+[[work]]
+company = "Rogers Communications"
+url = "https://rogers.com"
+roles = ["Developer",
+    "Big Man"]
+location = "Toronto, Ontario"
+start = "May 2018"
+end = "Aug. 2018"
+details = [
+    "Implemented and maintained frameworks for CI/CD pipelines for major media properties.",
+    "Developed Node.js MySQL interface and associated schemas tracking CI/CD results.",
+    "Launched Angular frontend for managing, visualizing, and querying database results."
+]
+
+[[work]]
+company = "Ottawa Catholic School Board"
+url = "https://ocsb.ca"
+roles = "Teaching Assistant"
+location = "Ottawa, Ontario"
+start = "Feb. 2013"
+end = "June 2013"
+details = [
+    "Collaboratively managed, organized, instructed, and administered behavior management policies for multiple elementary classes of students aged 5 to 12."
+]
+
+[[project]]
+title = "Dockerized Web Server"
+sub = "Personal Project"
+start = "April 2019"
+end = "Present"
+details = [
+    "Deployed and managed 20+ Docker images on Ubuntu provisioning varied remote and local functionality intended for personal use.",
+    "Implemented SSL certificates, authentication policies and reverse proxying in local NGINX instance and HTTPS access, domain resolution, and edge caching through Cloudflare.",
+    "Managed graphical dashboard visualizing various server and container metrics using Grafana and InfluxDB.",
+    "Configured local RESTful web service for controlling and querying various server properties."
+]
+
+[[project]]
+title = "Multiprocessed BMP Filter Server"
+url = "https://github.com/rahmanrafi/image-server"
+sub = "University of Toronto, CSC209 - Systems Programming"
+start = "Oct. 2017"
+end = "Nov. 2017"
+details = [
+    "Designed multiprocessed, multi-user HTTP server developed in C99 to perform image filtering on server and/or client-side bitmap files, with strict memory allocation guidelines.",
+    "Leveraged client-server communication through POSIX APIs for forks/pipes, sockets, and binary R/W."
+]
+
+[[project]]
+title = "Persistent Image Tag Manager"
+url = "https://github.com/rahmanrafi/image-tagger"
+sub = "University of Toronto, CSC207 - Software Design"
+start = "Sept. 2016"
+end = "Nov. 2016"
+details = [
+    "Developed Java-based GUI program for searching, and organizing images found on a given filesystem.",
+    "Enabled users to access and modify serializable image objects stored in recursive directories, and perform queries at a later time."
+]
+
+[skills]
+set = [
+    "Java",
+    "Python",
+    "Git",
+    "Docker",
+    "REST",
+    "JavaScript",
+    "node.js",
+    "jquery",
+    "C99",
+    "Verilog",
+    "HTML5/CSS3",
+    "MySQL",
+    "InfluxDB",
+    "Bash",
+    "NGINX",
+    "ArcGis"
+]

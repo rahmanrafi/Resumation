@@ -1,13 +1,28 @@
 import argparse
 import json
-import logging
 import re
 import time
+import webbrowser
+import logging
+import jinja2.exceptions
+try:
+    import toml
+    from toml import TomlDecodeError
+    HAVE_TOML = True
+except ImportError as e:
+    HAVE_TOML = False
+    IMP_LOG_MSG = 'toml package not found. If toml input is desired, please install it ' \
+                  'from https://pypi.org/project/toml or using `pip install toml`'
 from json import JSONDecodeError
 from pathlib import Path
-from jinja2 import Environment, FileSystemLoader
+try:
+    from jinja2 import Environment, FileSystemLoader
+    HAVE_JINJA = True
+except ImportError:
+    HAVE_JINJA = False
+    IMP_LOG_MSG = 'Required package module not found. Please install it from ' \
+                  'https://pypi.org/project/Jinja2 or by using `pip install jinja2'
 from shutil import copy
-import webbrowser
 
 ENCODING = 'utf-8'
 
@@ -17,21 +32,99 @@ def _proc_url(url, index=0):
     Custom filter to use with Jinja to get different components of a given URL
 
     :param url: the URL to process
-    :param index: 0 if the base URL is wanted, 1 if the location (i.e., /foo ) is wanted
+    :param index: 0 if the template URL is wanted, 1 if the location (i.e., /foo ) is wanted
     :return: the wanted component of the URL
     """
-    base_url = re.sub(r'^(?:https?://)?(?:www\.)?', '', url)
-    location = re.match(r'^.*/(.*)/?$', url)
+    base_url = re.match(r'^(?:https?://)?(?:www\.)?([\w.]+)/?', url)
+    if base_url:
+        base_url = base_url.group(1)
+    else:
+        return base_url
+    location = re.match(r'^(?:https?://)?(?:www\.)?.*\.\w+[/\w]*(/.+)$', url)
     if location:
         location = location.group(1)
     else:
         location = base_url
+
     result = (base_url, location)
 
     if index > 1:
         raise NotImplementedError
 
+
     return result[index]
+
+
+def _fill_data(data):
+    """
+    Fill in missing resume data with sensible defaults, prompting the user where necessary
+
+    :param data: dict of resume data
+    :return: fully populated resume data
+    """
+    REQUIREMENTS = {'info': {'name', 'location', 'pdfFilename'},
+                    'education': {'institution', 'location', 'start', 'end'},
+                    'work': {'company', 'roles', 'location', 'start', 'end'}
+                    }
+
+    for key in data.keys():
+        curr_section = data[key]
+        if key in REQUIREMENTS.keys():
+            if key == 'info':
+                contact_info = curr_section.get('contact')
+                if contact_info:
+                    for ci_key in contact_info:
+                        curr_ci = contact_info.get(ci_key)
+                        if type(curr_ci) == str or (type(curr_ci) == list and len(curr_ci) < 2):
+                            icon_class = ci_key.lower()
+                            icon = "fas fa-link"
+
+                            is_url = False
+                            curr_val = curr_ci if type(curr_ci) == str else curr_ci[0]
+                            if re.match(r'^(?:https?://)?(?:www\.)?([\w.]+)/?', curr_val):
+                                is_url = True
+                            if icon_class == 'github':
+                                icon = "fab fa-github"
+                            elif icon_class == 'linkedin':
+                                icon = "fab fa-linkedin"
+                            elif icon_class in ('site', 'website', 'page', 'webpage', 'personal', 'personal page'):
+                                icon = "fa fa-globe-americas"
+                            elif icon_class in ('email', 'e-mail', 'mail'):
+                                icon = "fa fa-at"
+                            elif icon_class in ('telephone', 'cell', 'mobile', 'phone', 'tel'):
+                                icon = "fas fa-phone"
+                            contact_info[ci_key] = [curr_ci if type(curr_ci) == str else curr_ci[0], icon, is_url]
+
+            if type(curr_section) != list:
+                items = [curr_section]
+            else:
+                items = curr_section
+            for item in items:
+                found_fields = set(item.keys())
+                for field in found_fields:
+                    if field in ('roles', 'details'):
+                        orig_val = item.get(field)
+                        if orig_val and type(orig_val) == str:
+                            item[field] = [orig_val]
+
+                required_fields = REQUIREMENTS.get(key)
+                # If there are one or more missing required fields from the input data,
+                # try to populate them
+                missing = required_fields.difference(found_fields)
+                if missing:
+                    for m_key in missing:
+                        item[m_key] = 'REQUIRED_VALUE_MISSING'
+                continue
+
+        elif key == 'metadata':
+            metadata = data[key]
+            name = data["info"]["name"]
+            possessive = "'s" if name[-1] != 's' else "'"
+            if not metadata.get('pageTitle'):
+                metadata['pageTitle'] = f'{name} - Resume'
+            if not metadata.get('pageDescription'):
+                metadata['pageDescription'] = f"{name}{possessive} academics, work experience, skills, and more."
+    return data
 
 
 def main():
@@ -43,22 +136,51 @@ def main():
     # General housekeeping/config
     args = parse_args()
     resume_data = None
-    fail_read = False
-    jenv = Environment(loader=FileSystemLoader('base', encoding=ENCODING))
-    jenv.filters['proc_url'] = _proc_url
 
-    # Read the JSON input and try sub it into the base template
+    # Read the input and try sub it into the template template
+    fail_read = False
+    fail_msg = None
     try:
-        with open(args.json, encoding=ENCODING) as json_fp:
-            resume_data = json.load(json_fp)
-    except (FileNotFoundError, JSONDecodeError) as e:
-        fail_read = e
-    if fail_read or not resume_data:
-        logging.error(f'Could not read json file at {args.json.resolve()}')
-        logging.debug(f'{fail_read}')
+        with open(args.data, encoding=ENCODING) as data_fp:
+            try:
+                resume_data = json.load(data_fp)
+            except JSONDecodeError:
+                if HAVE_TOML:
+                    try:
+                        data_fp.seek(0)
+                        resume_data = toml.load(data_fp)
+                    except TomlDecodeError:
+                        fail_read = True
+                        fail_msg = f'Data input could not be parsed as either a .json or .toml file. ' \
+                                   f'Please ensure {args.data.resolve()} is formatted correctly'
+                else:
+                    fail_read = True
+                    fail_msg = f'Data input could not be parsed as a .json file. If this is a .toml file, ' \
+                               f'please ensure the toml package (https://pypi.org/project/toml) is installed'
+        if not resume_data:
+            fail_read = True
+            fail_msg = 'No resume data was parsed'
+    except FileNotFoundError:
+        fail_read = True
+        fail_msg = f'Failed to access file {args.data.resolve()}'
+    if fail_read:
+        logging.error(f'Unable to continue with resume generation... {fail_msg}')
         exit(1)
-    template = jenv.get_template('base.html')
-    render = template.render(resume_data)
+
+    resume_data = _fill_data(resume_data)
+
+    logging.info('Generating resume...')
+    jenv = Environment(loader=FileSystemLoader('template', encoding=ENCODING))
+    jenv.filters['proc_url'] = _proc_url
+    template = jenv.get_template('template.html')
+    render = None
+    try:
+        render = template.render(resume_data)
+        logging.info('Successfully generated resume template!')
+    except jinja2.exceptions.TemplateError:
+        logging.error('Failed to generate resume template. Please ensure your data input contains '
+                      'all required fields. For more information, refer to resume.schema.json')
+        exit(1)
 
     # Output the generated resume files
     out_dir = Path('out')
@@ -69,18 +191,18 @@ def main():
         with open('out/resume.html', mode='w', encoding=ENCODING) as out:
             out.write(render)
         if not Path('out/res/css/resume.css').exists() or args.overwrite:
-            copy('base/base.css', 'out/res/css/resume.css')
+            copy('template/template.css', 'out/res/css/resume.css')
     except IOError as e:
         logging.error(f'Could not write to destination {out_dir.resolve()}: {e}')
         exit(1)
 
     # Ask the user if they want to open the generated page in their web browser so as to defer PDF generation to that
-    user_prompt = input('Would you like to open your browser now? (y/N): ')
+    user_prompt = input('Would you like to open your browser now to print to a .PDF? (y/N): ')
     while user_prompt and user_prompt.lower()[0] not in ('y', 'n'):
         user_prompt = input('Would you like to open your browser now to print to a .PDF? (y/N): ')
-    js_template = jenv.get_template('base.js')
+    js_template = jenv.get_template('template.js')
     if user_prompt and user_prompt.lower()[0] == 'y':
-        js_template = jenv.get_template('base.js')
+        js_template = jenv.get_template('template.js')
         js = js_template.render({'should_print': 'window.print()'})
         with open('out/res/js/resume.js', mode='w', encoding=ENCODING) as out_js:
             out_js.write(js)
@@ -93,7 +215,9 @@ def main():
         js = js_template.render({'should_print': ''})
         out_js.write(js)
 
-    print('Resume generation was successful. If you did not elect to export a .PDF, please use your browser')
+    print(f'\n'
+          f'Your generated resume is now available at {out_dir.joinpath("resume.html").resolve()}.\n'
+          f'If you did not elect to export a .PDF, open this file in your web browser and print to a .PDF')
     exit(0)
 
 
@@ -105,14 +229,20 @@ def parse_args():
     """
     parser = argparse.ArgumentParser(description='Generate a stylized HTML/PDF resume from JSON')
     parser.add_argument('--debug', action='store_true', help=argparse.SUPPRESS)
-    parser.add_argument('--json', type=Path, default=Path('resume.json'), help='path to resume JSON data')
+    parser.add_argument('--data', type=Path, default=Path('resume.json'), help='path to resume data (.json/.toml)')
     parser.add_argument('--overwrite', action='store_true', help='overwrite existing files in output directory')
 
     args = parser.parse_args()
-    log_level = logging.INFO
+    logging.basicConfig(format='[%(levelname)s] [%(asctime)s]: %(message)s', datefmt='%H:%M:%S', level=logging.INFO)
     if args.debug:
-        log_level = logging.DEBUG
-    logging.basicConfig(format='[%(asctime)s] [%(levelname)s]: %(message)s', datefmt='%H:%M:%S', level=log_level)
+        logging.getLogger().setLevel(logging.DEBUG)
+
+    if not HAVE_JINJA:
+        logging.critical(IMP_LOG_MSG)
+        exit(1)
+    elif not HAVE_TOML:
+        logging.warning(IMP_LOG_MSG)
+
     return parser.parse_args()
 
 

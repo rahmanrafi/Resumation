@@ -72,7 +72,7 @@ body, body * {
 #main {
     /* float: left; */
     font-size: 1rem;
-    padding: 0.1in 0.6in 0.1in 0.4in;
+    padding: 0.1in 0.45in 0.1in 0.45in;
     position: relative;
     animation: fadein 500ms;
     animation-timing-function: cubic-bezier(0, 0, 0.13, 0.97);
@@ -123,7 +123,7 @@ h3>a:after {
 
 #secondary-title {
     display: block;
-    margin-top: 10px;
+    margin-top: 5%;
 }
 
 .download-button {
@@ -162,8 +162,6 @@ h3>a:after {
 
 #main .contact {
     font-size: 0.95rem;
-    display: inline-flex;
-    columns: 2;
     line-height: 1.75rem;
     position: relative;
     top: 12px;
@@ -171,7 +169,18 @@ h3>a:after {
 }
 
 #main #cs-col-1 {
-    margin-right: 15px;
+    columns: 2;
+    width: 300px;
+    column-gap: 100px;
+}
+
+#main #cs-col-1 > li {
+    display: inline-flex;
+    align-items: baseline;
+}
+
+#main #cs-col-1 > li > i {
+    margin-right: 10px;
 }
 
 #interpunct {
@@ -181,14 +190,15 @@ h3>a:after {
 }
 
 #title {
-    padding-left: 8%;
+    display: flex;
+    left: 63px;
     line-height: 1.2;
     margin-bottom: 0.2in;
     position: relative;
 }
 
 #title h1 {
-    display: inline;
+    display: flex;
     font-size: 3.5rem;
     font-weight: 300;
     line-height: 1.5;
@@ -202,11 +212,15 @@ h3>a:after {
 }
 
 #title h1 #firstname {
-    margin-right: 6pt;
+    margin-right: 0.33em;
 }
 
 .subtitle {
     font-size: 1.10rem;
+}
+
+#title #name-subtitle {
+    margin-right: 4%;
 }
 
 .main-block {
@@ -469,12 +483,9 @@ MOBILE VIEWPORTS
         margin-bottom: 5%;
     }
     #title {
-        padding-left: unset;
-        left: 7vw;
-        margin-bottom: unset;
-        margin-top: 6px;
-        margin-right: 56px;
-        width: fit-content;
+        left: 33px;
+        margin-right: 50px;
+        flex-direction: column;
     }
     #title h1 {
         display: block;
@@ -495,7 +506,7 @@ MOBILE VIEWPORTS
         margin: unset;
     }
     #main {
-        padding: 0.1in 0.33in 0 0.33in;
+        padding: 0.1in 0.3in 0 0.33in;
     }
     #dl-big {
         display: none;
@@ -530,16 +541,17 @@ MOBILE VIEWPORTS
         top: -0.1rem;
     }
     #main .contact {
-        left: unset;
-        top: unset;
-        padding-left: 1px;
         font-size: 0.83rem;
-        float: unset;
         column-gap: 25px;
-        flex-wrap: wrap;
     }
     #main #cs-col-1 {
+        justify-content: unset;
+        flex-direction: column;
         margin-right: 5vw;
+        columns: unset;
+    }
+    #main #cs-col-1 > li {
+        margin-left: unset;
     }
     #secondary-title {
         margin-top: 20px;
