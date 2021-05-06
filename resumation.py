@@ -51,7 +51,6 @@ def _proc_url(url, index=0):
     if index > 1:
         raise NotImplementedError
 
-
     return result[index]
 
 
@@ -64,7 +63,7 @@ def _fill_data(data):
     """
     REQUIREMENTS = {'info': {'name', 'location', 'pdfFilename'},
                     'education': {'institution', 'location', 'start', 'end'},
-                    'work': {'company', 'roles', 'location', 'start', 'end'}
+                    'work': {'company', 'details', 'location', 'start', 'end'}
                     }
 
     for key in data.keys():
@@ -99,22 +98,13 @@ def _fill_data(data):
                 items = [curr_section]
             else:
                 items = curr_section
-            for item in items:
-                found_fields = set(item.keys())
-                for field in found_fields:
-                    if field in ('roles', 'details'):
-                        orig_val = item.get(field)
-                        if orig_val and type(orig_val) == str:
-                            item[field] = [orig_val]
-
-                required_fields = REQUIREMENTS.get(key)
-                # If there are one or more missing required fields from the input data,
-                # try to populate them
-                missing = required_fields.difference(found_fields)
-                if missing:
-                    for m_key in missing:
-                        item[m_key] = 'REQUIRED_VALUE_MISSING'
-                continue
+            if key == 'work':
+                for item in items:
+                    work_details = item.get('details', {})
+                    for role, details in work_details.items():
+                        if type(details) == str:
+                            work_details[role] = [details]
+            continue
 
         elif key == 'metadata':
             metadata = data[key]
@@ -124,6 +114,13 @@ def _fill_data(data):
                 metadata['pageTitle'] = f'{name} - Resume'
             if not metadata.get('pageDescription'):
                 metadata['pageDescription'] = f"{name}{possessive} academics, work experience, skills, and more."
+
+    gen_opts = data.get('options', {})
+    gen_opts['contactInfoColumns'] = gen_opts.get('contactInfoColumns', 2)
+    gen_opts['inlineDates'] = gen_opts.get('inlineDates', False)
+
+    data['options'] = gen_opts
+
     return data
 
 
@@ -144,22 +141,10 @@ def main():
         with open(args.data, encoding=ENCODING) as data_fp:
             try:
                 resume_data = json.load(data_fp)
-            except JSONDecodeError:
-                if HAVE_TOML:
-                    try:
-                        data_fp.seek(0)
-                        resume_data = toml.load(data_fp)
-                    except TomlDecodeError:
-                        fail_read = True
-                        fail_msg = f'Data input could not be parsed as either a .json or .toml file. ' \
-                                   f'Please ensure {args.data.resolve()} is formatted correctly'
-                else:
-                    fail_read = True
-                    fail_msg = f'Data input could not be parsed as a .json file. If this is a .toml file, ' \
-                               f'please ensure the toml package (https://pypi.org/project/toml) is installed'
-        if not resume_data:
-            fail_read = True
-            fail_msg = 'No resume data was parsed'
+                logging.debug(f'Parsed resume data: {resume_data}')
+            except JSONDecodeError as _e:
+                fail_read = True
+                fail_msg = f'Data input could not be parsed as a valid JSON. Please check for syntax errors. {_e}'
     except FileNotFoundError:
         fail_read = True
         fail_msg = f'Failed to access file {args.data.resolve()}'
@@ -172,10 +157,11 @@ def main():
     logging.info('Generating resume...')
     jenv = Environment(loader=FileSystemLoader('template', encoding=ENCODING))
     jenv.filters['proc_url'] = _proc_url
-    template = jenv.get_template('template.html')
+
+    html_template = jenv.get_template('template.html')
     render = None
     try:
-        render = template.render(resume_data)
+        render = html_template.render(resume_data)
         logging.info('Successfully generated resume template!')
     except jinja2.exceptions.TemplateError:
         logging.error('Failed to generate resume template. Please ensure your data input contains '
@@ -190,25 +176,36 @@ def main():
         Path('out/res/js').mkdir(parents=True, exist_ok=True)
         with open('out/resume.html', mode='w', encoding=ENCODING) as out:
             out.write(render)
+
         if not Path('out/res/css/resume.css').exists() or args.overwrite:
-            copy('template/template.css', 'out/res/css/resume.css')
-    except IOError as e:
-        logging.error(f'Could not write to destination {out_dir.resolve()}: {e}')
+            css_template = jenv.get_template('template.css')
+            try:
+                css_render = css_template.render(resume_data['options'])
+                with open('out/res/css/resume.css', mode='w', encoding=ENCODING) as out_css:
+                    out_css.write(css_render)
+                logging.info('Successfully generated resume CSS!')
+
+            except jinja2.exceptions.TemplateError as je:
+                logging.debug(je)
+                copy('template/template_d.css', 'out/res/css/resume.css')
+
+    except IOError as _e:
+        logging.error(f'Could not write to destination {out_dir.resolve()}: {_e}')
         exit(1)
 
     # Ask the user if they want to open the generated page in their web browser so as to defer PDF generation to that
-    user_prompt = input('Would you like to open your browser now to print to a .PDF? (y/N): ')
-    while user_prompt and user_prompt.lower()[0] not in ('y', 'n'):
-        user_prompt = input('Would you like to open your browser now to print to a .PDF? (y/N): ')
+    # user_prompt = input('Would you like to open your browser now to print to a .PDF? (y/N): ')
+    # while user_prompt and user_prompt.lower()[0] not in ('y', 'n'):
+    #     user_prompt = input('Would you like to open your browser now to print to a .PDF? (y/N): ')
+    # js_template = jenv.get_template('template.js')
+    # if user_prompt and user_prompt.lower()[0] == 'y':
     js_template = jenv.get_template('template.js')
-    if user_prompt and user_prompt.lower()[0] == 'y':
-        js_template = jenv.get_template('template.js')
-        js = js_template.render({'should_print': 'window.print()'})
-        with open('out/res/js/resume.js', mode='w', encoding=ENCODING) as out_js:
-            out_js.write(js)
-        webbrowser.open(f'file://{Path("out/resume.html").resolve()}')
-        # Throw in a delay to have the browser window that opens cache this temporary version before overwriting it
-        time.sleep(5)
+    js = js_template.render({'should_print': ''})
+    with open('out/res/js/resume.js', mode='w', encoding=ENCODING) as out_js:
+        out_js.write(js)
+    webbrowser.open(f'file://{Path("out/resume.html").resolve()}')
+    # Throw in a delay to have the browser window that opens cache this temporary version before overwriting it
+    # time.sleep(2)
 
     # Write the final resume.js to the output directory
     with open('out/res/js/resume.js', mode='w', encoding=ENCODING) as out_js:

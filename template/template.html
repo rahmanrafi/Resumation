@@ -30,71 +30,81 @@
 <div class="resume-content">
     <section id="main">
 
-            <header id="title">
-                <div id="name-subtitle">
-                    <h1><span id="firstname">{{ info.name.split(' ')[0] }}</span> <strong>{{ info.name.split(' ')[1]
-                        }}</strong>
-                    </h1>
-                    <span class="subtitle">{{ info.subtitle }}<span id="interpunct">●</span>{{ info.location }}</span>
-                </div>
-
-                <div class="contact">
-                    <div class="cs-col" id="cs-col-1">
-                        {% for c in info.contact.values() %}
-                        {% if '@' in c[0] %}
-                        <li><i class="{{ c[1] }}"></i> <a href="mailto:{{ c[0] }}">{{ c[0] }}</a></li>
-                        {% else %}
-                        <li><i class="{{ c [1] }}"></i> <a href="{{ c[0] }}">{{ c[0]|proc_url(1) }}</a></li>
-                        {% endif %}
-                        {% endfor %}
-                    </div>
-                </div>
-            </header>
-
-            <div id="secondary-title">
-                <a href="resume.pdf" download="{{ info.pdfFilename }}" id="dl-link">
-                    <div class="download-button" id="dl-big">
-                        <i class="fas fa-file-pdf dl-icon"></i><span style="position:relative; margin-left: 8px">Download
-                PDF</span>
-                    </div>
-                    <div class="download-button" id="dl-small">
-                        <svg class="svg-icon" id="dl-icon-small">
-                            <use xlink:href="#dl-svg">
-                                <symbol xmlns="http://www.w3.org/2000/svg" viewbox="0 0 512 512" id="dl-svg">
-                                    <path
-                                            d="M117.3 1.5c-17.2 3.7-33 17.7-39.5 35l-2.3 6-.3 106.6-.2 106.6-6.3.5c-7.7.6-13.4 3.9-17.4 10l-2.8 4.2-.3 72.5c-.3 81-.5 78 6.5 84.2 4.9 4.2 9.2 5.9 15.3 5.9h5v15.3c0 24.5 3.8 35.5 16.7 48.1 3.5 3.5 8.9 7.5 12.6 9.4 12.8 6.4 5.6 6.2 165.8 6.2 142 0 145.8 0 153.3-2 4.3-1.1 10.3-3.4 13.5-5.2 7.4-4.2 16.8-13.9 20.8-21.3 6.8-12.9 6.3.9 6.3-186V128.4l-64.4-64.2L335.2 0 229.4.1c-85 0-107.1.3-112.1 1.4zm204.9 38.2c0 3.8.2 21.2.2 38.8.2 35 .5 37 6.1 46 4 6.4 9.4 11.1 16.5 14.4l5.5 2.6 39.6.3 39.7.3.4 56.2c.3 30.9.4 103.3.4 160.8l-.1 104.6-3 4.8c-2.1 3.5-4.5 5.6-8 7.4l-4.9 2.6-142.1.3c-102 .2-143.5-.1-147.5-.9-4.5-.9-6.3-1.9-10.1-5.9-5.8-5.9-6.9-10.3-6.9-27v-12h133.3c127.2 0 133.4-.1 137.3-1.9 4.9-2.2 11.1-9.2 12.4-14 .6-2.2 1-30 1-72.2 0-77.9.2-75.7-7.4-82.7-2.4-2.2-6.1-4.5-8.2-5.1-2.7-.8-45.3-1.1-136.1-1.1H108V154.9c0-74 .3-102.3 1.2-105.7 1.6-6.4 8.8-13.6 14.9-15 2.7-.6 42.2-1 101.2-1.1L322 33l.2 6.7zM144.3 301c7.3 1.1 16.4 5 19.6 8.4 4.4 4.8 7.1 12.1 7.1 19.5 0 19.9-13.2 31.1-36.7 31.1H126v33h-21v-90.9l5.8-.6c3.1-.3 6.6-.7 7.7-.9 4.7-.7 19.5-.5 25.8.4zm81.4 0c15.1 2.1 25.1 7.1 32.3 16.1 5.5 7 8 15.6 8 27.8 0 25.3-11.8 40.9-35.2 46.6-7.8 2-27.8 3-38.1 2.1l-7.7-.8v-90.7l4.3-.5c12-1.6 26.7-1.8 36.4-.6zm111.3 8.5v8.5h-36v21h33v17h-33v37h-21v-92h57v8.5z">
-                                    </path>
-                                    <path
-                                            d="M126 329.9V344h6.6c10.9 0 16.7-4 17.9-12.5.5-3 .2-5.3-1-7.8-2.6-5.4-5.8-7-15.2-7.5l-8.3-.5v14.2zm81.3-13.2c-1 .4-1.3 7.4-1.3 30.4V377l2.6.6c3.7.9 14.3-.5 19-2.5 6-2.7 10.9-7.5 13.5-13.3 2.1-4.6 2.4-6.9 2.4-16.3 0-12.3-.9-15.1-7.3-21.8-2.6-2.7-5.5-4.3-10-5.7-5.9-1.8-16-2.5-18.9-1.3z">
-                                    </path>
-                                </symbol>
-                            </use>
-                        </svg>
-                    </div>
-                </a>
+        <header id="title">
+            <div id="name-subtitle">
+                <h1><span id="firstname">{{ info.name.split(' ')[0] }}</span> <strong>{{ info.name.split(' ')[1]
+                    }}</strong>
+                </h1>
+                <span class="subtitle">{{ info.subtitle }}<span id="interpunct">●</span>{{ info.location }}</span>
             </div>
+
+            <div class="contact">
+                <div class="cs-col" id="cs-col-1">
+                    {% for c in info.contact.values() %}
+                    {% if '@' in c[0] %}
+                    <li><i class="{{ c[1] }}"></i> <a href="mailto:{{ c[0] }}">{{ c[0] }}</a></li>
+                    {% else %}
+                    <li><i class="{{ c [1] }}"></i> <a href="{{ c[0] }}">{{ c[0]|proc_url(1) }}</a></li>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </header>
+
+        <div id="secondary-title">
+            <a href="resume.pdf" download="{{ info.pdfFilename }}" id="dl-link">
+                <div class="download-button" id="dl-big">
+                    <i class="fas fa-file-pdf dl-icon"></i><span style="position:relative; margin-left: 8px">Download
+                PDF</span>
+                </div>
+                <div class="download-button" id="dl-small">
+                    <svg class="svg-icon" id="dl-icon-small">
+                        <use xlink:href="#dl-svg">
+                            <symbol xmlns="http://www.w3.org/2000/svg" viewbox="0 0 512 512" id="dl-svg">
+                                <path
+                                        d="M117.3 1.5c-17.2 3.7-33 17.7-39.5 35l-2.3 6-.3 106.6-.2 106.6-6.3.5c-7.7.6-13.4 3.9-17.4 10l-2.8 4.2-.3 72.5c-.3 81-.5 78 6.5 84.2 4.9 4.2 9.2 5.9 15.3 5.9h5v15.3c0 24.5 3.8 35.5 16.7 48.1 3.5 3.5 8.9 7.5 12.6 9.4 12.8 6.4 5.6 6.2 165.8 6.2 142 0 145.8 0 153.3-2 4.3-1.1 10.3-3.4 13.5-5.2 7.4-4.2 16.8-13.9 20.8-21.3 6.8-12.9 6.3.9 6.3-186V128.4l-64.4-64.2L335.2 0 229.4.1c-85 0-107.1.3-112.1 1.4zm204.9 38.2c0 3.8.2 21.2.2 38.8.2 35 .5 37 6.1 46 4 6.4 9.4 11.1 16.5 14.4l5.5 2.6 39.6.3 39.7.3.4 56.2c.3 30.9.4 103.3.4 160.8l-.1 104.6-3 4.8c-2.1 3.5-4.5 5.6-8 7.4l-4.9 2.6-142.1.3c-102 .2-143.5-.1-147.5-.9-4.5-.9-6.3-1.9-10.1-5.9-5.8-5.9-6.9-10.3-6.9-27v-12h133.3c127.2 0 133.4-.1 137.3-1.9 4.9-2.2 11.1-9.2 12.4-14 .6-2.2 1-30 1-72.2 0-77.9.2-75.7-7.4-82.7-2.4-2.2-6.1-4.5-8.2-5.1-2.7-.8-45.3-1.1-136.1-1.1H108V154.9c0-74 .3-102.3 1.2-105.7 1.6-6.4 8.8-13.6 14.9-15 2.7-.6 42.2-1 101.2-1.1L322 33l.2 6.7zM144.3 301c7.3 1.1 16.4 5 19.6 8.4 4.4 4.8 7.1 12.1 7.1 19.5 0 19.9-13.2 31.1-36.7 31.1H126v33h-21v-90.9l5.8-.6c3.1-.3 6.6-.7 7.7-.9 4.7-.7 19.5-.5 25.8.4zm81.4 0c15.1 2.1 25.1 7.1 32.3 16.1 5.5 7 8 15.6 8 27.8 0 25.3-11.8 40.9-35.2 46.6-7.8 2-27.8 3-38.1 2.1l-7.7-.8v-90.7l4.3-.5c12-1.6 26.7-1.8 36.4-.6zm111.3 8.5v8.5h-36v21h33v17h-33v37h-21v-92h57v8.5z">
+                                </path>
+                                <path
+                                        d="M126 329.9V344h6.6c10.9 0 16.7-4 17.9-12.5.5-3 .2-5.3-1-7.8-2.6-5.4-5.8-7-15.2-7.5l-8.3-.5v14.2zm81.3-13.2c-1 .4-1.3 7.4-1.3 30.4V377l2.6.6c3.7.9 14.3-.5 19-2.5 6-2.7 10.9-7.5 13.5-13.3 2.1-4.6 2.4-6.9 2.4-16.3 0-12.3-.9-15.1-7.3-21.8-2.6-2.7-5.5-4.3-10-5.7-5.9-1.8-16-2.5-18.9-1.3z">
+                                </path>
+                            </symbol>
+                        </use>
+                    </svg>
+                </div>
+            </a>
+        </div>
         <section class="main-block">
             <h2>
                 <i class="fa fa-graduation-cap"></i> <span class="section-title">Education</span>
             </h2>
             <section class="blocks">
                 {% for edu in education %}
+                {% if not options.inlineDates %}
                 <div class="date">
                     <span>{{ edu.start }}</span><span>{{ edu.end }}</span>
                 </div>
+                {% endif %}
                 <div class="decorator">
                 </div>
                 <div class="details">
                     <header>
                         <h3>{{ edu.institution }}</h3>
-                        <div class="job-details">
-                            <span class="place vwb-place">{{ edu.sub }}</span>
-                            {% if edu.subBr %}
-                            <span class="place vws-place">{{ edu.subBr[0] }} <br> {{ edu.subBr[1] }}</span>
-                            {% endif %}
-                            <span class="location">{{ edu.location }}</span>
+                        <div>
+                        <span class="location">{{ edu.location }}</span>
+                        {% if options.inlineDates %}
+                            <div class="date">
+                                <span>{{ edu.start }} - {{ edu.end }}</span>
+                            </div>
+                        {% endif %}
                         </div>
                     </header>
+                    <div class="job-details">
+                        <span class="place vwb-place">{{ edu.sub }}</span>
+                        {% if edu.subBr %}
+                        <span class="place vws-place">{{ edu.subBr[0] }} <br> {{ edu.subBr[1] }}</span>
+                        {% endif %}
+
+                    </div>
                     <div>
                         <ul>
                             {% for detail in edu.details %}
@@ -112,9 +122,11 @@
             </h2>
             {% for job in work %}
             <section class="blocks">
+                {% if not options.inlineDates %}
                 <div class="date">
                     <span>{{ job.start }}</span><span>{{ job.end }}</span>
                 </div>
+                {% endif %}
                 <div class="decorator">
                 </div>
                 <div class="details">
@@ -125,35 +137,34 @@
                         {% else %}
                         <h3>{{ job.company }}</h3>
                         {% endif %}
-
-                        {% if job.roles|length > 1 %}
-                        <div class="job-details" display="inline-grid">
-                            <div style="display: inline-grid;">
-                                {% for role in job.roles %}
-                                <span class="place">{{ role }}</span>
-                                {% endfor %}
-                            </div>
-                            <div style="float: right;">
-                                <span class="location">{{ job.location }}</span>
-                            </div>
-                        </div>
-                        {% else %}
-                        <div class="job-details">
-                            <span class="place">{{ job.roles[0] }}</span>
+                        <div style="float: right;">
                             <span class="location">{{ job.location }}</span>
+                            {% if options.inlineDates %}
+                                <div class="date">
+                                    <span>{{ job.start }} - {{ job.end }}</span>
+                                </div>
+                            {% endif %}
                         </div>
-                        {% endif %}
                     </header>
-                    <div>
-                        <ul>
-                            {% for detail in job.details %}
-                            <li>{{ detail }}</li>
+
+                    <div class="job-details" display="inline-grid">
+                        <div style="display: inline-grid;">
+                            {% for role, role_details in job.details.items() %}
+                            <span class="place">{{ role }}</span>
+                            <div class="job-role-details">
+                                <ul>
+                                    {% for detail in role_details %}
+                                    <li>{{ detail }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
                             {% endfor %}
-                        </ul>
+                        </div>
                     </div>
                 </div>
             </section>
             {% endfor %}
+        </section>
             {% if project %}
             <section class="main-block">
                 <h2>
@@ -161,9 +172,11 @@
                 </h2>
                 {% for project in project %}
                 <section class="blocks">
+                    {% if not options.inlineDates %}
                     <div class="date">
                         <span>{{ project.start }}</span><span id="date-now">{{ project.end }}</span>
                     </div>
+                    {% endif %}
                     <div class="decorator">
                     </div>
                     <div class="details">
@@ -173,6 +186,11 @@
                                    href="{{ project.url }}">{{ project.title }}</a></h3>
                             {% else %}
                             <h3>{{ project.title }}</h3>
+                            {% endif %}
+                            {% if options.inlineDates %}
+                                <div class="date">
+                                    <span>{{ project.start }} - {{ project.end }}</span>
+                                </div>
                             {% endif %}
                         </header>
                         <div class="job-details">

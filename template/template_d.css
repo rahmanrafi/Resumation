@@ -169,7 +169,7 @@ h3>a:after {
 }
 
 #main #cs-col-1 {
-    columns: {{ contactInfoColumns }};
+    columns: 1;
     width: 300px;
     column-gap: 100px;
 }
@@ -304,9 +304,6 @@ h3>a:after {
 }
 
 .blocks {
-    {% if inlineDates %}
-    margin-left: 72px;
-    {% endif %}
     display: flex;
     flex-flow: row nowrap;
 }
@@ -347,24 +344,17 @@ h3>a:after {
 }
 
 .date {
+    flex: 0 0 var(--date-block-width);
     font-size: 0.95rem;
     margin: 0 15px 0 -15px;
     padding-top: calc(var(--row-blocks-padding-top) + 1px) !important;
     text-align: right;
-    {% if inlineDates %}
-    flex: unset;
-    margin-bottom: -1rem !important;
-    color: #666;
-    {% else %}
-    flex: 0 0 var(--date-block-width);
-    {% endif %}
 }
 
 .date span {
     display: block;
 }
 
-{% if not inlineDates %}
 .date span:nth-child(2)::before {
     color: #b1b1b1;
     content: "|";
@@ -373,7 +363,6 @@ h3>a:after {
     position: relative;
     right: 5.5pt;
 }
-{% endif %}
 
 .decorator {
     border-left: var(--decorator-border);

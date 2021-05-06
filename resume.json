@@ -1,125 +1,139 @@
 {
-  "info": {
-    "name": "Rafi Rahman",
-    "email": "hello@rafirahman.com",
-    "website": "https://rafirahman.com",
-    "linkedin": "https://linkedin.com/in/rahmanrafi",
-    "github": "https://github.com/rahmanrafi",
-    "subtitle": "Software Developer",
-    "location": "Toronto",
-    "pdfFilename": "Rafi Rahman - Resume.pdf"
-  },
   "education": [
     {
+      "details": [
+        "Fields of Study: Computer Science; Physical and Environmental Geography; History and Philosophy of Science and Technology.",
+        "Dean's List, Winter 2016."
+      ],
+      "end": "Sept. 2019",
       "institution": "University of Toronto, St. George",
+      "location": "Toronto, Ontario",
+      "start": "Sept. 2014",
       "sub": "Honours Bachelor of Science with Distinction | CGPA: 3.4",
       "subBr": [
         "Honours Bachelor of Science with Distinction",
         "CGPA: 3.4"
-      ],
-      "location": "Toronto, Ontario",
-      "start": "Sept. 2014",
-      "end": "Sept. 2019",
-      "details": [
-        "Fields of Study: Computer Science; Physical and Environmental Geography; History and Philosophy of Science and Technology.",
-        "Dean's List, Winter 2016."
       ]
     }
   ],
   "work": [
     {
       "company": "Alphawave",
-      "url": "https://awaveip.com",
-      "role": "DevOps Engineer",
-      "location": "Toronto, Ontario",
-      "start": "Aug. 2020:",
+      "details": {
+        "DevOps Engineer": [
+          "Development of executable tools to supplement hardware design workflows.",
+          "Administration of distributed computing network and other server utilities."
+        ]
+      },
       "end": "Present",
-      "details": [
-        "Development of executable tools to supplement hardware design workflows.",
-        "Administration of distributed computing network and other server utilities."
-      ]
+      "location": "Toronto, Ontario",
+      "start": "Aug. 2020",
+      "url": "https://awaveip.com"
     },
     {
       "company": "Rogers Communications",
-      "url": "https://rogers.com",
-      "role": "Developer",
-      "location": "Toronto, Ontario",
-      "start": "May 2018:",
+      "details": {
+        "Developer": [
+          "Implemented and maintained frameworks for CI/CD pipelines for major media properties.",
+          "Developed Node.js MySQL interface and associated schemas tracking CI/CD results."
+        ],
+        "Big Man": "Launched Angular frontend for managing, visualizing, and querying database results."
+      },
       "end": "Aug. 2018",
-      "details": [
-        "Implemented and maintained frameworks for CI/CD pipelines for major media properties.",
-        "Developed Node.js MySQL interface and associated schemas tracking CI/CD results.",
-        "Launched Angular frontend for managing, visualizing, and querying database results."
-      ]
+      "location": "Toronto, Ontario",
+      "start": "May 2018",
+      "url": "https://rogers.com"
     },
     {
       "company": "Ottawa Catholic School Board",
-      "url": "https://ocsb.ca",
-      "role": "Teaching Assistant",
-      "location": "Ottawa, Ontario",
-      "start": "Feb. 2013:",
+      "details": {
+        "Teaching Assistant": "Collaboratively managed, organized, instructed, and administered behavior management policies for multiple elementary classes of students aged 5 to 12."
+      },
       "end": "June 2013",
-      "details": [
-        "Collaboratively managed, organized, instructed, and administered behavior management policies for multiple elementary classes of students aged 5 to 12."
-      ]
+      "location": "Ottawa, Ontario",
+      "start": "Feb. 2013",
+      "url": "https://ocsb.ca"
     }
   ],
-  "projects": [
+  "project": [
     {
-      "title": "Dockerized Web Server",
-      "sub": "Personal Project",
-      "start": "April 2019",
-      "end": "Present",
       "details": [
         "Deployed and managed 20+ Docker images on Ubuntu provisioning varied remote and local functionality intended for personal use.",
         "Implemented SSL certificates, authentication policies and reverse proxying in local NGINX instance and HTTPS access, domain resolution, and edge caching through Cloudflare.",
         "Managed graphical dashboard visualizing various server and container metrics using Grafana and InfluxDB.",
         "Configured local RESTful web service for controlling and querying various server properties."
-      ]
+      ],
+      "end": "Present",
+      "start": "April 2019",
+      "sub": "Personal Project",
+      "title": "Dockerized Web Server"
     },
     {
-      "title": "Multiprocessed BMP Filter Server",
-      "url": "https://github.com/rahmanrafi/image-server",
-      "sub": "University of Toronto, CSC209 - Systems Programming",
-      "start": "Oct. 2017",
-      "end": "Nov. 2017",
       "details": [
         "Designed multiprocessed, multi-user HTTP server developed in C99 to perform image filtering on server and/or client-side bitmap files, with strict memory allocation guidelines.",
         "Leveraged client-server communication through POSIX APIs for forks/pipes, sockets, and binary R/W."
-      ]
+      ],
+      "end": "Nov. 2017",
+      "start": "Oct. 2017",
+      "sub": "University of Toronto, CSC209 - Systems Programming",
+      "title": "Multiprocessed BMP Filter Server",
+      "url": "https://github.com/rahmanrafi/image-server"
     },
     {
-      "title": "Persistent Image Tag Manager",
-      "url": "https://github.com/rahmanrafi/image-tagger",
-      "sub": "University of Toronto, CSC207 - Software Design",
-      "start": "Sept. 2016",
-      "end": "Nov. 2016",
       "details": [
         "Developed Java-based GUI program for searching, and organizing images found on a given filesystem.",
         "Enabled users to access and modify serializable image objects stored in recursive directories, and perform queries at a later time."
-      ]
+      ],
+      "end": "Nov. 2016",
+      "start": "Sept. 2016",
+      "sub": "University of Toronto, CSC207 - Software Design",
+      "title": "Persistent Image Tag Manager",
+      "url": "https://github.com/rahmanrafi/image-tagger"
     }
   ],
-  "skills": [
-    "Java",
-    "Python",
-    "Git",
-    "Docker",
-    "REST",
-    "JavaScript",
-    "node.js",
-    "jquery",
-    "C99",
-    "Verilog",
-    "HTML5/CSS3",
-    "MySQL",
-    "InfluxDB",
-    "Bash",
-    "NGINX",
-    "ArcGis"
-  ],
+  "info": {
+    "location": "Toronto",
+    "name": "Rafi Rahman",
+    "pdfFilename": "Rafi Rahman - Resume.pdf",
+    "subtitle": "Software Developer",
+    "contact": {
+      "email": [
+        "hello@rafirahman.com",
+        "fa fa-at"
+      ],
+      "github": [
+        "https://github.com/rahmanrafi",
+        "fab fa-github"
+      ],
+      "linkedin": [
+        "https://linkedin.com/in/rahmanrafi",
+        "fab fa-linkedin"
+      ],
+      "ungabunga": "https://google.com",
+      "website": "https://rafirahman.com"
+    }
+  },
+  "skills": {
+    "set": [
+      "Java",
+      "Python",
+      "Git",
+      "Docker",
+      "REST",
+      "JavaScript",
+      "node.js",
+      "jquery",
+      "C99",
+      "Verilog",
+      "HTML5/CSS3",
+      "MySQL",
+      "InfluxDB",
+      "Bash",
+      "NGINX",
+      "ArcGis"
+    ]
+  },
   "metadata": {
-    "pageTitle": "Rafi Rahman - Resume",
     "pageDescription": "Rafi Rahman's academic background, work experience, skillset, and more.",
     "pageKeywords": [
       "Rafi",
@@ -140,6 +154,11 @@
       "academics",
       "university",
       "education"
-    ]
-  }
+    ],
+    "pageTitle": "Rafi Rahman - Resume"
+  },
+  "options": {
+      "contactInfoColumns":  2,
+      "inlineDates":  true
+    }
 }
