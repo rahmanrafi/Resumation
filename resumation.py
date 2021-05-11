@@ -116,6 +116,7 @@ def _fill_data(data):
                 metadata['pageDescription'] = f"{name}{possessive} academics, work experience, skills, and more."
 
     gen_opts = data.get('options', {})
+    gen_opts['pageInchesWidth'] = gen_opts.get('pageInchesWidth', 8.5)
     gen_opts['contactInfoColumns'] = gen_opts.get('contactInfoColumns', 2)
     gen_opts['inlineDates'] = gen_opts.get('inlineDates', False)
 

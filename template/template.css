@@ -65,7 +65,7 @@ body, body * {
 }
 
 .resume-content {
-    width: 8.5in;
+    width: {{ pageInchesWidth }}in;
     margin: auto;
 }
 
@@ -437,7 +437,7 @@ h3>a:after {
 }
 
 .job-role-details {
-    margin: 0 !important;
+    margin: 0 0 3% !important;
     color: #444;
     font-size: 1rem;
 }
